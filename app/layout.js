@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Space_Grotesk, Bricolage_Grotesque } from "next/font/google";
 import Header from "@/components/header";
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
           <Header />
           <main className="container mx-auto px-4 py-8">{children}</main>
         </ClientWalletProvider>
+        <Analytics />
       </body>
     </html>
   );
