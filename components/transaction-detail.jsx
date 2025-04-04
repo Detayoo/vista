@@ -53,7 +53,7 @@ const TransactionDetail = ({ transaction, onClose }) => {
             {status === "confirmed" ? (
               <>
                 <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
-                <p className="text-sm font-medium bg-green-500">Confirmed</p>
+                <p className="text-sm font-medium text-green-500">Confirmed</p>
               </>
             ) : status === "pending" ? (
               <>
@@ -63,7 +63,7 @@ const TransactionDetail = ({ transaction, onClose }) => {
             ) : (
               <>
                 <div className="w-2 h-2 rounded-full bg-red-500 mr-2"></div>
-                <p className="text-sm font-medium bg-red-500">Failed</p>
+                <p className="text-sm font-medium text-red-500">Failed</p>
               </>
             )}
           </div>
@@ -116,7 +116,7 @@ const TransactionDetail = ({ transaction, onClose }) => {
 
       <div className="pt-2">
         <a
-          href={`https://etherscan.io/tx/${id}`}
+          href={`https://sepolia.etherscan.io/tx/${id}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-blue-600 hover:text-blue-800 text-sm flex items-center"

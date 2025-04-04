@@ -11,16 +11,14 @@ const TransactionList = ({ onSelectTransaction, selectedId }) => {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
-    // Get transactions from localStorage
+    // Initial load
     const loadTransactions = () => {
       const txs = getTransactions();
 
-      // Filter by current wallet address
       const filteredTxs = txs.filter(
         (tx) => tx.from.toLowerCase() === address.toLowerCase()
       );
 
-      // Sort by timestamp (newest first)
       filteredTxs.sort((a, b) => b.timestamp - a.timestamp);
 
       setTransactions(filteredTxs);
@@ -28,15 +26,23 @@ const TransactionList = ({ onSelectTransaction, selectedId }) => {
 
     loadTransactions();
 
-    // Set up event listener for storage changes
-    const handleStorageChange = () => {
-      loadTransactions();
+    // Event listener for storage updates
+    const handleStorageUpdate = () => {
+      const txs = getTransactions();
+
+      const filteredTxs = txs.filter(
+        (tx) => tx.from.toLowerCase() === address.toLowerCase()
+      );
+
+      filteredTxs.sort((a, b) => b.timestamp - a.timestamp);
+      setTransactions(filteredTxs);
     };
 
-    window.addEventListener("storage-updated", handleStorageChange);
+    window.addEventListener("storage-updated", handleStorageUpdate);
 
+    // Cleanup listener on unmount
     return () => {
-      window.removeEventListener("storage-updated", handleStorageChange);
+      window.removeEventListener("storage-updated", handleStorageUpdate);
     };
   }, [address]);
 

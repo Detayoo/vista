@@ -20,7 +20,8 @@ const DonationForm = () => {
   const [balance, setBalance] = useState(null);
 
   // Hardcoded recipient address for the crowdfunding campaign
-  const RECIPIENT_ADDRESS = "0x29D7d1dd5B6f9C864d9db560D72a247c178aE86B";
+  // const RECIPIENT_ADDRESS = "0x29D7d1dd5B6f9C864d9db560D72a247c178aE86B";
+  const RECIPIENT_ADDRESS = "0x715B1fd9bf6F3bA52155DD0eA1AfC254981455eb";
 
   // Function to check if user has sufficient funds before proceeding
   const checkBalance = async (amountInEth) => {
@@ -93,13 +94,10 @@ const DonationForm = () => {
         status: "pending",
       };
 
-      // Add the pending transaction to storage
       addTransaction(pendingTransaction);
 
-      // Wait for transaction to be mined
       const receipt = await tx.wait();
 
-      // Update transaction with confirmation details
       const confirmedTransaction = {
         ...pendingTransaction,
         status: "confirmed",
@@ -107,21 +105,16 @@ const DonationForm = () => {
         blockHash: receipt.blockHash,
       };
 
-      // Update the transaction in storage
       addTransaction(confirmedTransaction);
 
-      // Reset form
       setAmount("");
       setIsProcessing(false);
     } catch (err) {
       console.error("Error processing donation:", err);
 
-      // Format the error for better user experience
       const formattedError = formatEthersError(err);
       setError(formattedError.message);
 
-      // If we got far enough to create a transaction but it failed,
-      // we should still record it as a failed transaction
       if (err.transaction && err.transaction.hash) {
         const failedTransaction = {
           id: err.transaction.hash,
