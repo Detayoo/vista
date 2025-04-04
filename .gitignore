@@ -1,0 +1,34 @@
+# Next.js
+.next/
+/out/
+
+# Node.js dependencies
+node_modules/
+
+# Build artifacts
+build/
+dist/
+coverage/
+.runtime.js
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# IDE and editor files
+.vscode/
+.idea/
+.thumbs.db
+.DS_Store
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Other
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
