@@ -7,7 +7,6 @@ const FundingProgress = () => {
   const [raised, setRaised] = useState(0);
   const [percentage, setPercentage] = useState(0);
 
-  // Goal amount in ETH
   const goalAmount = 10;
 
   useEffect(() => {
@@ -40,7 +39,6 @@ const FundingProgress = () => {
       <div className="flex justify-between">
         <h3 className="text-sm font-medium">Funding Progress</h3>
       </div>
-
 
       <div className="flex justify-between text-sm text-gray-500">
         <span>{raised.toFixed(3)} ETH raised</span>

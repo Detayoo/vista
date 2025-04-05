@@ -10,7 +10,6 @@ const TransactionList = ({ onSelectTransaction, selectedId }) => {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
-    // Initial load
     const loadTransactions = () => {
       const txs = getTransactions();
 
