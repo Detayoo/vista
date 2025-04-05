@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Progress } from "@/components/ui/progress";
-import { ethers } from "ethers";
 import { getTransactions } from "@/lib/storage";
 
 const FundingProgress = () => {
@@ -13,11 +11,9 @@ const FundingProgress = () => {
   const goalAmount = 10;
 
   useEffect(() => {
-    // Calculate the total amount raised from transactions
     const calculateRaised = () => {
       const transactions = getTransactions();
 
-      // Sum up all transaction amounts
       const total = transactions.reduce((sum, tx) => {
         return sum + parseFloat(tx.amount);
       }, 0);
@@ -26,10 +22,8 @@ const FundingProgress = () => {
       setPercentage(Math.min((total / goalAmount) * 100, 100));
     };
 
-    // Initial calculation
     calculateRaised();
 
-    // Set up event listener for storage changes
     const handleStorageChange = () => {
       calculateRaised();
     };
@@ -45,10 +39,8 @@ const FundingProgress = () => {
     <div className="space-y-3">
       <div className="flex justify-between">
         <h3 className="text-sm font-medium">Funding Progress</h3>
-        {/* <span className="text-sm font-semibold">{percentage.toFixed(1)}%</span> */}
       </div>
 
-      {/* <Progress value={percentage} /> */}
 
       <div className="flex justify-between text-sm text-gray-500">
         <span>{raised.toFixed(3)} ETH raised</span>

@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { useWallet } from "@/context/wallet-context";
 import { getTransactions } from "@/lib/storage";
-import { formatEther } from "@/lib/utils";
 
 const TransactionList = ({ onSelectTransaction, selectedId }) => {
   const { address } = useWallet();
@@ -26,7 +25,6 @@ const TransactionList = ({ onSelectTransaction, selectedId }) => {
 
     loadTransactions();
 
-    // Event listener for storage updates
     const handleStorageUpdate = () => {
       const txs = getTransactions();
 
@@ -40,7 +38,6 @@ const TransactionList = ({ onSelectTransaction, selectedId }) => {
 
     window.addEventListener("storage-updated", handleStorageUpdate);
 
-    // Cleanup listener on unmount
     return () => {
       window.removeEventListener("storage-updated", handleStorageUpdate);
     };

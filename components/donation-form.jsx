@@ -9,7 +9,6 @@ import { addTransaction } from "@/lib/storage";
 import {
   checkSufficientFunds,
   formatEthersError,
-  getEthBalance,
 } from "@/lib/web3";
 
 const DonationForm = () => {
@@ -17,21 +16,16 @@ const DonationForm = () => {
   const [amount, setAmount] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState("");
-  const [balance, setBalance] = useState(null);
 
-  // Hardcoded recipient address for the crowdfunding campaign
-  // const RECIPIENT_ADDRESS = "0x29D7d1dd5B6f9C864d9db560D72a247c178aE86B";
+  
   const RECIPIENT_ADDRESS = "0x715B1fd9bf6F3bA52155DD0eA1AfC254981455eb";
 
-  // Function to check if user has sufficient funds before proceeding
   const checkBalance = async (amountInEth) => {
     try {
       if (!provider || !address) return false;
 
-      // Convert amount to Wei
       const amountInWei = ethers.parseEther(amountInEth).toString();
 
-      // Check if user has sufficient funds
       const fundStatus = await checkSufficientFunds(
         provider,
         address,
@@ -45,7 +39,6 @@ const DonationForm = () => {
 
       return true;
     } catch (err) {
-      console.error("Error checking balance:", err);
       setError("Error checking your balance. Please try again.");
       return false;
     }
@@ -63,7 +56,6 @@ const DonationForm = () => {
       setError("");
       setIsProcessing(true);
 
-      // First check if the user has sufficient funds for this transaction
       const hasSufficientFunds = await checkBalance(amount);
 
       if (!hasSufficientFunds) {
@@ -71,19 +63,15 @@ const DonationForm = () => {
         return;
       }
 
-      // Convert amount to Wei (1 ETH = 10^18 Wei) - ethers v6 syntax
       const amountInWei = ethers.parseEther(amount);
 
-      // Get signer from provider - ethers v6 syntax
       const signer = await provider.getSigner();
 
-      // Send transaction
       const tx = await signer.sendTransaction({
         to: RECIPIENT_ADDRESS,
         value: amountInWei,
       });
 
-      // Create a pending transaction record
       const pendingTransaction = {
         id: tx.hash,
         from: address,
@@ -110,7 +98,6 @@ const DonationForm = () => {
       setAmount("");
       setIsProcessing(false);
     } catch (err) {
-      console.error("Error processing donation:", err);
 
       const formattedError = formatEthersError(err);
       setError(formattedError.message);
