@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, useMemo } from 'react'
 import { ethers } from 'ethers'
 import { setupWeb3 } from '@/lib/web3'
 
