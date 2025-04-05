@@ -4,7 +4,6 @@ import { Space_Grotesk, Bricolage_Grotesque } from "next/font/google";
 import Header from "@/components/header";
 import { ClientWalletProvider } from "@/components/ClientProviders";
 
-// Using Bricolage Grotesque for the body text
 const bodyFont = Bricolage_Grotesque({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],

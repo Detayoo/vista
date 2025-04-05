@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { useWallet } from '@/context/wallet-context'
 import { Button } from '@/components/ui/button'
 
-// Define common button styling to maintain consistent width
 const buttonBaseClass = "min-w-[160px] flex items-center justify-center"
 
 const WalletConnect = () => {
@@ -12,7 +11,6 @@ const WalletConnect = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
   
-  // Set a brief timeout to ensure UI consistent loading appearance
   useEffect(() => {
     const timer = setTimeout(() => {
       setInitialLoading(false)
@@ -23,7 +21,6 @@ const WalletConnect = () => {
   
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen)
   
-  // Show loading state during initial component mount or explicit loading
   if (initialLoading || isLoading) {
     return (
       <Button 

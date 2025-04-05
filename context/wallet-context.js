@@ -17,9 +17,8 @@ export const WalletProvider = ({ children }) => {
   const [provider, setProvider] = useState(null)
   const [address, setAddress] = useState('')
   const [isConnected, setIsConnected] = useState(false)
-  const [isLoading, setIsLoading] = useState(true) // Start with loading state
+  const [isLoading, setIsLoading] = useState(true) 
 
-  // Function to clear wallet state
   const clearWalletState = () => {
     localStorage.removeItem('walletConnected')
     setProvider(null)
@@ -27,39 +26,30 @@ export const WalletProvider = ({ children }) => {
     setIsConnected(false)
   }
 
-  // Check if wallet was previously connected
   useEffect(() => {
     const checkConnection = async () => {
       try {
-        // Check if wallet is already connected (browser has ethereum object)
         if (window.ethereum && localStorage.getItem('walletConnected') === 'true') {
-          // First check if we can get accounts without prompting
           try {
             const accounts = await window.ethereum.request({ 
-              method: 'eth_accounts'  // This doesn't trigger the MetaMask popup
+              method: 'eth_accounts' 
             })
             
             if (accounts && accounts.length > 0) {
-              // User is still connected, restore connection
               const web3Provider = new ethers.BrowserProvider(window.ethereum)
               const network = await web3Provider.getNetwork()
               
-              // Update state
               setProvider(web3Provider)
               setAddress(accounts[0])
               setIsConnected(true)
             } else {
-              // User disconnected their wallet from our site in MetaMask
               clearWalletState()
             }
           } catch (error) {
             console.error('Error getting accounts silently:', error)
-            // If this fails, fall back to the connect method
             try {
-              // Set up web3 connection
               const { provider: web3Provider, address: userAddress } = await setupWeb3()
               
-              // Update state
               setProvider(web3Provider)
               setAddress(userAddress)
               setIsConnected(true)
@@ -81,21 +71,17 @@ export const WalletProvider = ({ children }) => {
     checkConnection()
   }, [])
 
-  // Update state when account changes
   useEffect(() => {
     if (window.ethereum) {
       const handleAccountsChanged = async (accounts) => {
         if (accounts.length === 0) {
-          // User disconnected
           disconnect()
         } else if (accounts[0] !== address) {
-          // Account changed
           setAddress(accounts[0])
         }
       }
 
       const handleChainChanged = () => {
-        // Reload the page when chain changes
         window.location.reload()
       }
 
@@ -113,13 +99,10 @@ export const WalletProvider = ({ children }) => {
     try {
       setIsLoading(true)
 
-      // Set up web3 connection
       const { provider: web3Provider, address: userAddress } = await setupWeb3()
       
-      // Store connection state
       localStorage.setItem('walletConnected', 'true')
       
-      // Update state
       setProvider(web3Provider)
       setAddress(userAddress)
       setIsConnected(true)
@@ -138,16 +121,18 @@ export const WalletProvider = ({ children }) => {
     setIsConnected(false)
   }
 
+  const values = useMemo(() => ({
+    provider,
+    address,
+    isConnected,
+    isLoading,
+    connect,
+    disconnect,
+  }), [provider, address, isConnected, isLoading, connect, disconnect])
+
   return (
     <WalletContext.Provider
-      value={{
-        provider,
-        address,
-        isConnected,
-        isLoading,
-        connect,
-        disconnect,
-      }}
+      value={values}
     >
       {children}
     </WalletContext.Provider>
@@ -155,3 +140,4 @@ export const WalletProvider = ({ children }) => {
 }
 
 export const useWallet = () => useContext(WalletContext)
+
